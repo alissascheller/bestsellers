@@ -1,0 +1,55 @@
+<html>
+<head>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>
+<script>
+
+	d3.csv("merged.csv", function(data){
+
+		var responses = _.pluck(data, "Author");
+		var uniques = _.uniq(responses);
+		//console.log(uniques);
+
+		//console.log(_.uniq(_.pluck(data, "Author")));
+		
+
+		var counts = {};
+		// iterate over each response
+		_.each(responses, function(response) {
+			// if the response is already in the counts object
+			if (counts[response]) {
+				counts[response]+=1;
+			}
+			// response is not in our object
+			else {
+				// add it to the object
+				counts[response] = 1;
+			}
+		})
+		var countsArray = [];
+		_.each(counts, function(occurance, response) {
+			var a = {
+				'response': response,
+				'occurance': occurance
+			};
+			countsArray.push(a)
+		})
+
+		var sorted = _.sortBy(countsArray, function(a) {
+			return -a.occurance;
+		})
+		
+		_.each(sorted, function(d) {
+			console.log(d)
+		})
+		
+	})
+
+</script>
+
+
+
+</body>
+</html>
